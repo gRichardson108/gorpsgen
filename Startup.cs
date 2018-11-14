@@ -27,6 +27,13 @@ namespace gorpsgen
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddAuthentication("Bearer")
+            .AddJwtBearer(options =>
+            {
+                options.Audience = "us-west-2_p6lgdDlXc";
+                options.Authority = "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_p6lgdDlXc";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +72,7 @@ namespace gorpsgen
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+            app.UseAuthentication();
         }
     }
 }
