@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication;
 
 namespace gorpsgen
 {
@@ -20,6 +25,10 @@ namespace gorpsgen
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<OpenIdConnectOptions>(Configuration.GetSection("Authentication:Cognito"));
+            var serviceProvider = services.BuildServiceProvider();
+            var authOptions = serviceProvider.GetService<IOptions<OpenIdConnectOptions>>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // In production, the Angular files will be served from this directory
@@ -28,17 +37,31 @@ namespace gorpsgen
                 configuration.RootPath = "ClientApp/dist";
             });
 
-            services.AddAuthentication("Bearer")
-            .AddJwtBearer(options =>
+            services.AddAuthentication(options =>
             {
-                options.Audience = "us-west-2_p6lgdDlXc";
-                options.Authority = "https://cognito-idp.us-west-2.amazonaws.com/us-west-2_p6lgdDlXc";
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddOpenIdConnect(options =>
+            {
+                options.ResponseType = authOptions.Value.ResponseType;
+                options.MetadataAddress = authOptions.Value.MetadataAddress;
+                options.ClientId = authOptions.Value.ClientId;
+                options.ClientSecret = authOptions.Value.ClientSecret;
+                options.SaveTokens = authOptions.Value.SaveTokens;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = authOptions.Value.TokenValidationParameters.ValidateIssuer
+                };
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        {    
+            app.UseAuthentication();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -53,6 +76,17 @@ namespace gorpsgen
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.Use(async (context, next) =>
+            {
+                if (!context.User.Identity.IsAuthenticated)
+                {
+                    await context.ChallengeAsync("OpenIdConnect");
+                }
+                else
+                {
+                    await next();
+                }
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -62,17 +96,16 @@ namespace gorpsgen
 
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
+                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                    // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "ClientApp";
+                    spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-            app.UseAuthentication();
         }
     }
 }
