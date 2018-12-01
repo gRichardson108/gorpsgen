@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 
 namespace gorpsgen
 {
@@ -56,6 +57,8 @@ namespace gorpsgen
                     ValidateIssuer = authOptions.Value.TokenValidationParameters.ValidateIssuer
                 };
             });
+
+            services.AddDbContext<QuizContext>(opt=>opt.UseInMemoryDatabase("quiz"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,7 +83,8 @@ namespace gorpsgen
             {
                 if (!context.User.Identity.IsAuthenticated)
                 {
-                    await context.ChallengeAsync("OpenIdConnect");
+                    await next();
+                    //await context.ChallengeAsync("OpenIdConnect");
                 }
                 else
                 {
