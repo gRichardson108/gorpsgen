@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { QuizSubmissionService } from '../quiz-submission.service';
+import { Component, OnInit, NgModule } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { QuestionSubmissionService } from '../question-submission.service';
 
 @Component({
   selector: 'app-question-component',
@@ -11,16 +12,13 @@ export class QuestionListComponent implements OnInit {
   question = {};
   questions;
 
-  constructor(private api: QuizSubmissionService) { }
+  constructor(private api: QuestionSubmissionService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.api.getQuestions().subscribe(res => {
+    var quizId = this.route.snapshot.paramMap.get('quizId');
+    this.api.getQuestions(quizId).subscribe(res => {
+      console.log(res);
       this.questions = res;
     });
   }
-
-  post(question){
-    this.api.postQuestion(question);
-  }
-
 }

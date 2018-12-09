@@ -6,14 +6,17 @@ import { RouterModule } from '@angular/router';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule, MatCheckboxModule, MatInputModule, MatCardModule, MatListModule} from '@angular/material';
 import { QuizSubmissionService } from './quiz-submission.service';
+import { QuestionSubmissionService } from './question-submission.service';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { QuizQuestionComponent } from './quiz-question/quiz-question.component';
+import { QuestionComponent } from './question/question.component';
 import { QuestionListComponent } from './question-list/question-list.component';
+import { QuizComponent } from './quiz/quiz.component';
+import { QuizListComponent } from './quiz-list/quiz-list.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +25,10 @@ import { QuestionListComponent } from './question-list/question-list.component';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    QuizQuestionComponent,
-    QuestionListComponent
+    QuestionComponent,
+    QuestionListComponent,
+    QuizComponent,
+    QuizListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,8 +38,11 @@ import { QuestionListComponent } from './question-list/question-list.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'quiz-question', component: QuizQuestionComponent },
+      { path: 'question', component: QuestionComponent },
       { path: 'question-list', component: QuestionListComponent },
+      { path: 'question-list/:quizId', component: QuestionListComponent },
+      { path: 'quiz', component : QuizComponent },
+      { path: 'quiz-list', component : QuizListComponent },
     ]),
     BrowserAnimationsModule,
     MatButtonModule, 
@@ -43,7 +51,7 @@ import { QuestionListComponent } from './question-list/question-list.component';
     MatCardModule,
     MatListModule,
   ],
-  providers: [QuizSubmissionService],
+  providers: [QuizSubmissionService, QuestionSubmissionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

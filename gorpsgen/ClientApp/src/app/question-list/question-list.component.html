@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-content>
     <mat-list *ngFor="let question of questions">
-      <mat-list-item>
+      <mat-list-item class="clickLink" (click)="api.selectQuestion(question)">
         {{question.text}}
       </mat-list-item>
     </mat-list>
@@ -9,3 +9,4 @@
   <mat-card-actions>
   </mat-card-actions>
 </mat-card>
+<app-question></app-question>

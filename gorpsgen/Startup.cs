@@ -83,8 +83,8 @@ namespace gorpsgen
             {
                 if (!context.User.Identity.IsAuthenticated)
                 {
-                    await next();
-                    //await context.ChallengeAsync("OpenIdConnect");
+                    //await next();
+                    await context.ChallengeAsync("OpenIdConnect");
                 }
                 else
                 {

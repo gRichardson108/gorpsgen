@@ -12,5 +12,6 @@ namespace gorpsgen.Models
         public string CombatAnswer { get; set; }
         public string MagicAnswer { get; set; }
         public string StealthAnswer { get; set; }
+        public int QuizId { get; set; }
     }
 }

@@ -234,4 +234,5 @@ _Pvt_Extensions
 
 secrets/
 
-appsettings.Development.json.vscode/
+appsettings.Development.json
+.vscode/launch.json
