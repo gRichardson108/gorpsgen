@@ -9,6 +9,9 @@ using Amazon.CognitoIdentity;
 using Amazon.CognitoIdentityProvider;
 using Amazon.CognitoIdentityProvider.Model;
 using Amazon.Extensions.CognitoAuthentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 [ApiController]
 public class AuthenticationController : ControllerBase
@@ -47,24 +50,32 @@ public class AuthenticationController : ControllerBase
 
         return Ok();
     }
-    [HttpPost]
-    [Route("api/signin")]
-    public async Task<ActionResult<string>> SignIn(User user)
+    // [HttpPost]
+    // [Route("api/signin")]
+    // public async Task<ActionResult<string>> SignIn(User user)
+    // {
+    //     var cognito = new AmazonCognitoIdentityProviderClient(_region);
+
+    //     var request = new AdminInitiateAuthRequest
+    //     {
+    //         UserPoolId = "us-west-2_p6lgdDlXc",
+    //         ClientId = _clientId,
+    //         AuthFlow = AuthFlowType.ADMIN_NO_SRP_AUTH
+    //     };
+
+    //     request.AuthParameters.Add("USERNAME", user.Username);
+    //     request.AuthParameters.Add("PASSWORD", user.Password);
+
+    //     var response = await cognito.AdminInitiateAuthAsync(request);
+
+    //     return Ok(response.AuthenticationResult.IdToken);
+    // }
+
+    [HttpGet]
+    [Route("api/signout")]
+    public async Task Logout()
     {
-        var cognito = new AmazonCognitoIdentityProviderClient(_region);
-
-        var request = new AdminInitiateAuthRequest
-        {
-            UserPoolId = "us-west-2_p6lgdDlXc",
-            ClientId = _clientId,
-            AuthFlow = AuthFlowType.ADMIN_NO_SRP_AUTH
-        };
-
-        request.AuthParameters.Add("USERNAME", user.Username);
-        request.AuthParameters.Add("PASSWORD", user.Password);
-
-        var response = await cognito.AdminInitiateAuthAsync(request);
-
-        return Ok(response.AuthenticationResult.IdToken);
+        await HttpContext.SignOutAsync("Cookies");
+        await HttpContext.SignOutAsync("OpenIdConnect");
     }
 }

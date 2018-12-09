@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace gorpsgen
 {
@@ -20,7 +22,14 @@ namespace gorpsgen
         {
             Configuration = configuration;
         }
+        private string GetAbsoluteUri(string signoutUri, string authority)
+        {
+            var signOutUri = new Uri(signoutUri, UriKind.RelativeOrAbsolute);
+            var authorityUri = new Uri(authority, UriKind.Absolute);
 
+            var uri = signOutUri.IsAbsoluteUri ? signOutUri : new Uri(authorityUri, signOutUri);
+            return uri.AbsoluteUri;
+        }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -52,18 +61,28 @@ namespace gorpsgen
                 options.ClientId = authOptions.Value.ClientId;
                 options.ClientSecret = authOptions.Value.ClientSecret;
                 options.SaveTokens = authOptions.Value.SaveTokens;
+                options.Events = new OpenIdConnectEvents();
+                {
+                    options.Events.OnRedirectToIdentityProviderForSignOut = context =>
+                    {
+                        context.ProtocolMessage.IssuerAddress =
+                            GetAbsoluteUri(authOptions.Value.SignedOutRedirectUri, authOptions.Value.Authority);
+                        return Task.CompletedTask;
+                    };
+                }
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = authOptions.Value.TokenValidationParameters.ValidateIssuer
                 };
+                
             });
 
-            services.AddDbContext<QuizContext>(opt=>opt.UseInMemoryDatabase("quiz"));
+            services.AddDbContext<QuizContext>(opt => opt.UseInMemoryDatabase("quiz"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {    
+        {
             app.UseAuthentication();
             if (env.IsDevelopment())
             {
@@ -100,10 +119,10 @@ namespace gorpsgen
 
             app.UseSpa(spa =>
             {
-                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                    // see https://go.microsoft.com/fwlink/?linkid=864501
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                    spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {

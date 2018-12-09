@@ -23,9 +23,16 @@ namespace gorpsgen.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Models.Quiz quiz)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userId = HttpContext.User.Claims.First();            
+
             context.Quizzes.Add(quiz);
             await context.SaveChangesAsync();
-            return Ok(quiz);
+            return CreatedAtAction("Get", new { id = quiz.ID }, quiz);
         }
 
         [HttpGet]

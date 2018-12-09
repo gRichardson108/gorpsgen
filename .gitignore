@@ -2,3 +2,4 @@
 *.pem
 *.pfx
 gorpsgen/out/
+gorpsgen/.vscode/launch.json
