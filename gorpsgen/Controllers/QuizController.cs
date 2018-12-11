@@ -41,6 +41,12 @@ namespace gorpsgen.Controllers
             return context.Quizzes;
         }
 
+        [HttpGet("all")]
+        public IEnumerable<Models.Quiz> GetAll()
+        {
+            return context.Quizzes;
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] int id)
         {

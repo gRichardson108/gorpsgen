@@ -15,5 +15,6 @@
     <button *ngIf="quiz.id" (click)="quiz = {}" mat-button>New</button>
     <button *ngIf="quiz.id" [routerLink]="['/question-list', quiz.id]" mat-button>Edit Questions</button>
     <button *ngIf="!quiz.id" (click)="api.postQuiz(quiz)" mat-button>Save</button>
+    <button *ngIf="quiz.id" [routerLink]="['/play-quiz', quiz.id]" mat-button color="accent">Play Quiz</button>
   </mat-card-actions>
 </mat-card>

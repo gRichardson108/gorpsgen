@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace gorpsgen
 {
@@ -81,7 +83,7 @@ namespace gorpsgen
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, QuizContext dbcontext)
         {
             app.UseAuthentication();
             if (env.IsDevelopment())
@@ -102,14 +104,19 @@ namespace gorpsgen
             {
                 if (!context.User.Identity.IsAuthenticated)
                 {
-                    //await next();
-                    await context.ChallengeAsync("OpenIdConnect");
+                    await next();
+                    //await context.ChallengeAsync("OpenIdConnect");
                 }
                 else
                 {
                     await next();
                 }
             });
+
+            
+            //var dbcontext = app.ApplicationServices.GetService<QuizContext>();
+            TestData.loadTestData(dbcontext);
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

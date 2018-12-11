@@ -1,0 +1,28 @@
+<mat-card>
+  <mat-card-content>
+    <mat-accordion *ngFor="let question of questions; let i=index">
+      <mat-expansion-panel 
+      [expanded]="step === i" 
+      (opened)="setStep(i)"
+      hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-description [style.white-space]="step === i? 'normal' : 'nowrap'">
+            {{question.text}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-radio-group class="question-select-list" [(ngModel)]="question.selectedAnswer">
+          <mat-radio-button class="question-answer" *ngFor="let answer of question.answers" [value]="answer">
+            <span class="wrap-radio-button-text">{{answer}}</span>
+          </mat-radio-button>
+        </mat-radio-group>
+        <mat-action-row>
+          <button *ngIf="previousExists" mat-button color="warn" (click)="prevStep()">Previous</button>
+          <button *ngIf="nextExists" mat-button color="primary" (click)="nextStep()">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-card-content>
+  <mat-card-actions>
+    <button (click)="finished()" color="primary" mat-raised-button>Finish</button>
+  </mat-card-actions>
+</mat-card>

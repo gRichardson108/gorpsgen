@@ -19,7 +19,7 @@
                 </li>
                 <li [routerLinkActive]='["link-active"]'>
                     <a [routerLink]='["/quiz"]' (click)='collapse()'>
-                        <span class='glyphicon glyphicon-th-list'></span> Quiz
+                        <span class='glyphicon glyphicon-th-list'></span> New Quiz
                     </a>
                 </li>
                 <li [routerLinkActive]='["link-active"]'>
@@ -36,7 +36,7 @@
         </div>
         <span>
             <a href="/api/signout">
-                <button mat-button>Out</button>
+                <button mat-raised-button color="primary" class="sign-out-button">Sign Out</button>
             </a>
         </span>
     </div>

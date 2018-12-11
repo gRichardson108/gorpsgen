@@ -14,6 +14,10 @@ export class QuizSubmissionService {
     return this.http.get(this.baseUrl + 'api/quiz');
   }
 
+  getAllQuizzes(){
+    return this.http.get(this.baseUrl + 'api/quiz/all');
+  }
+
   postQuiz(quiz){
     this.http.post(this.baseUrl + 'api/quiz', quiz).subscribe(result => {
       console.log(result);

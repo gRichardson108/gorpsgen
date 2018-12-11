@@ -1,0 +1,24 @@
+.question-select-list {
+    display: inline-flex;
+    flex-direction: column;
+}
+.question-answer {
+    margin: 5px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    overflow: visible;
+    display: inline-block;
+}
+.wrap-radio-button-text {
+    white-space: normal;
+}
+
+.mat-expansion-panel-header-description {
+    display: block;
+    flex: 1 1 auto;
+    margin-right: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-basis: 5%;
+  }
