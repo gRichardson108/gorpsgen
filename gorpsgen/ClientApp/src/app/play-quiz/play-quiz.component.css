@@ -22,3 +22,7 @@
     text-overflow: ellipsis;
     flex-basis: 5%;
   }
+
+.mat-accordion {
+    flex: 1 1 auto;
+}

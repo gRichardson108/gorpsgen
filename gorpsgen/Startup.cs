@@ -79,7 +79,10 @@ namespace gorpsgen
                 
             });
 
-            services.AddDbContext<QuizContext>(opt => opt.UseInMemoryDatabase("quiz"));
+            services.AddDbContext<QuizContext>(opt => 
+                //opt.UseInMemoryDatabase("quiz")
+                opt.UseMySql(Configuration.GetConnectionString("RDSConnection"))
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

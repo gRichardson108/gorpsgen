@@ -9,5 +9,7 @@ namespace gorpsgen.Models
     {
         public int ID { get; set; }
         public string Title { get; set; }
+
+        public List<Question> Questions {get; set; }
     }
 }
