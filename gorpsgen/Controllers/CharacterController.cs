@@ -38,13 +38,13 @@ namespace gorpsgen.Controllers
         [HttpGet]
         public IEnumerable<Models.CharacterSheet> Get()
         {
-            return context.CharacterSheets;
+            return context.CharacterSheets.Include(m => m.Archetype);
         }
 
         [HttpGet("all")]
         public IEnumerable<Models.CharacterSheet> GetAll()
         {
-            return context.CharacterSheets;
+            return context.CharacterSheets.Include(m => m.Archetype);
         }
 
         [HttpGet("{id}")]

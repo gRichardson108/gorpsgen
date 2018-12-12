@@ -78,4 +78,11 @@ public class AuthenticationController : ControllerBase
         await HttpContext.SignOutAsync("Cookies");
         await HttpContext.SignOutAsync("OpenIdConnect");
     }
+
+    [HttpGet]
+    [Route("api/isgm")]
+    public bool CheckIfGM()
+    {
+        return HttpContext.User.IsInRole("GM");
+    }
 }

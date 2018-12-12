@@ -1,3 +1,11 @@
-<p>
-  character-list works!
-</p>
+<mat-card>
+    <mat-card-content>
+      <mat-list *ngFor="let character of userCharacters">
+        <mat-list-item class="clickLink" [routerLink]="['/characters', character.id]">
+          {{character.archetype.name}}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+    </mat-card-actions>
+  </mat-card>

@@ -12,7 +12,18 @@ export class QuestionSubmissionService {
 
   getQuestions(quizId)
   {
-    return this.http.get(this.baseUrl + `api/question/${quizId}`);
+    if (quizId)
+    {
+      return this.http.get(this.baseUrl + `api/question/${quizId}`);
+    } else{
+      return this.getAllQuestions();
+    }
+    
+  }
+
+  getAllQuestions()
+  {
+    return this.http.get(this.baseUrl + `api/question`);
   }
 
   postQuestion(question){

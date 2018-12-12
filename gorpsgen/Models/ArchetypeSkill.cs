@@ -6,22 +6,17 @@ using System.Threading.Tasks;
 
 namespace gorpsgen.Models
 {
-    public class CharacterSheet
+    public class ArchetypeSkill
     {
         public int ID { get; set; }
-
-        public int Strength { get; set; }
-        public int Dexterity { get; set; }
-        public int Intelligence { get; set; }
-        public int Health { get; set; }
-
         public int ArchetypeID { get; set; }
+        public int SkillID { get; set; }
 
         [ForeignKey("ArchetypeID")]
         public Archetype Archetype { get; set; }
 
-        public List<Skill> Skills { get; set; }
-
-        public string UserSub { get; set; }
+        [ForeignKey("SkillID")]
+        public Skill Skill { get; set; }
+        
     }
 }
