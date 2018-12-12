@@ -59,6 +59,8 @@ import { CharacterGeneratorService } from './character-generator.service';
       { path: 'quiz', component : QuizComponent },
       { path: 'quiz-list', component : QuizListComponent },
       { path: 'play-quiz/:quizId', component : PlayQuizComponent },
+      { path: 'characters', component : CharacterListComponent },
+      { path: 'characters/:characterId', component : CharacterComponent },
     ]),
     BrowserAnimationsModule,
     MatButtonModule, 

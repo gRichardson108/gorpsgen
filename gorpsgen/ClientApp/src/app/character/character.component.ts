@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { CharacterGeneratorService } from '../character-generator.service';
+import { ActivatedRoute } from '@angular/router';
+import { Character } from '../models/character';
+import { PrimaryStat } from '../models/primaryStat';
 
 @Component({
   selector: 'app-character',
@@ -7,9 +11,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CharacterComponent implements OnInit {
 
-  constructor() { }
+  character: Character;
+  id: string;
+  primaryStats: PrimaryStat[];
+
+  constructor(private api: CharacterGeneratorService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.id = this.route.snapshot.paramMap.get('characterId');
+    this.api.getCharacter(this.id).subscribe( (c: Character)  => {
+      this.character = c;
+      this.primaryStats = [
+        { name : "STR", points : this.character.strength},
+        { name : "DEX", points : this.character.dexterity},
+        { name : "INT", points : this.character.intelligence},
+        { name : "HT", points : this.character.health},
+      ]
+    });
   }
 
 }

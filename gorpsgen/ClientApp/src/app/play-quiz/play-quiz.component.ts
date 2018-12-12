@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QuizSubmissionService } from '../quiz-submission.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionSubmissionService } from '../question-submission.service';
 import { CharacterGeneratorService } from '../character-generator.service';
 
@@ -21,7 +21,8 @@ export class PlayQuizComponent implements OnInit {
   constructor(private quizapi: QuizSubmissionService,
     private questionapi: QuestionSubmissionService, 
     private chargenapi: CharacterGeneratorService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.quizId = this.route.snapshot.paramMap.get('quizId');
@@ -62,7 +63,10 @@ export class PlayQuizComponent implements OnInit {
 
   finished() {
     var score = this.chargenapi.calculateScore(this.questions);
-    console.log(score);
+    score.QuizId = this.quizId;
+    this.chargenapi.submitQuizResponse(score).subscribe(result => {
+      this.router.navigate(['/characters', result.id]);
+    });
   }
 
 }
