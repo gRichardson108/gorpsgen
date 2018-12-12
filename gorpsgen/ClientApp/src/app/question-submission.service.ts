@@ -1,12 +1,13 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+import { Question } from './models/question';
 
 @Injectable()
 export class QuestionSubmissionService {
 
-  private selectedQuestion = new Subject<any>();
-  questionSelected = this.selectedQuestion.asObservable();
+  private selectedQuestion: Subject<Question> = new Subject<Question>();
+  questionSelected: Observable<Question> = this.selectedQuestion.asObservable();
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 

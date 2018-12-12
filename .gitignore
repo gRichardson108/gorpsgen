@@ -3,3 +3,4 @@
 *.pfx
 gorpsgen/out/
 gorpsgen/.vscode/launch.json
+gorpsgen/site/

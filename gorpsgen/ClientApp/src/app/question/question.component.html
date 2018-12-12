@@ -22,7 +22,7 @@
   </mat-card-content>
   <mat-card-actions>
     <button *ngIf="question.id" (click)="api.putQuestion(question)" mat-button>Edit</button>
-    <button *ngIf="question.id" (click)="question = {}" mat-button>New</button>
+    <button *ngIf="question.id" (click)="newQuestion()" mat-button>New</button>
     <button *ngIf="!question.id" (click)="post(question)" mat-button>Save</button>
   </mat-card-actions>
 </mat-card>

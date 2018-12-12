@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QuizSubmissionService } from '../quiz-submission.service';
+import { Quiz } from '../models/quiz';
 
 @Component({
   selector: 'app-quiz',
@@ -8,7 +9,7 @@ import { QuizSubmissionService } from '../quiz-submission.service';
 })
 export class QuizComponent implements OnInit {
 
-  quiz = {};
+  quiz: Quiz = new Quiz();
 
   constructor(private api: QuizSubmissionService) { }
 

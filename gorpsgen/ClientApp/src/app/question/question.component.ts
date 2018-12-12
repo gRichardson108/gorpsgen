@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { QuestionSubmissionService } from '../question-submission.service';
+import { Question } from '../models/question';
 
 @Component({
   selector: 'app-question',
@@ -9,8 +10,8 @@ import { QuestionSubmissionService } from '../question-submission.service';
 })
 export class QuestionComponent implements OnInit {
 
-  question = {};
-  quizId;
+  question: Question = new Question();
+  quizId: string;
 
   constructor(private api: QuestionSubmissionService, private route: ActivatedRoute) { }
 
@@ -23,6 +24,10 @@ export class QuestionComponent implements OnInit {
   post(question){
     question.quizId = this.quizId;
     this.api.postQuestion(question);
+  }
+
+  newQuestion(){
+    this.question = new Question();
   }
 
 }
