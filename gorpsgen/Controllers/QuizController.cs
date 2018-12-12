@@ -35,6 +35,47 @@ namespace gorpsgen.Controllers
             return CreatedAtAction("Get", new { id = quiz.ID }, quiz);
         }
 
+        [HttpPost("QuizResponse")]
+        public async Task<IActionResult> PostQuizResponse([FromBody] Models.QuizResponse quizResponse)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var userIdClaim = HttpContext.User.Claims.FirstOrDefault();
+            var userId = quizResponse.UserSub;
+            if (userIdClaim == null){
+                userId = quizResponse.UserSub;
+            } else {
+                userId = userIdClaim.ToString();
+            }
+
+            context.QuizResponses.Add(quizResponse);
+            Archetype archetype = context.Archetypes
+                .Where(a => 
+                    (a.CombatRating == quizResponse.RatioCombat) &&
+                    (a.MagicRating == quizResponse.RatioMagic) &&
+                    (a.StealthRating == quizResponse.RatioStealth)
+                ).FirstOrDefault();
+            if (archetype == null)
+            {
+                archetype = context.Archetypes.First();
+            }
+
+            CharacterSheet character = new CharacterSheet{
+                Strength = archetype.BaseStrength,
+                Dexterity = archetype.BaseDexterity,
+                Intelligence = archetype.BaseIntelligence,
+                Health = archetype.BaseHealth,
+                Archetype = archetype,
+                UserSub = userId
+            };
+            context.Add(character);
+            await context.SaveChangesAsync();
+            return CreatedAtAction("Get", new { id = character.ID }, character );
+        }
+
         [HttpGet]
         public IEnumerable<Models.Quiz> Get()
         {

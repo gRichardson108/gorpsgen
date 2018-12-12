@@ -80,8 +80,8 @@ namespace gorpsgen
             });
 
             services.AddDbContext<QuizContext>(opt => 
-                //opt.UseInMemoryDatabase("quiz")
-                opt.UseMySql(Configuration.GetConnectionString("RDSConnection"))
+                opt.UseInMemoryDatabase("quiz")
+                //opt.UseMySql(Configuration.GetConnectionString("RDSConnection"))
             );
         }
 
