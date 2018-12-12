@@ -28,7 +28,7 @@ import { QuizListComponent } from './quiz-list/quiz-list.component';
 import { CharacterComponent } from './character/character.component';
 import { CharacterListComponent } from './character-list/character-list.component';
 import { PlayQuizComponent } from './play-quiz/play-quiz.component';
-import { CharacterGeneratorService } from './character-generator.service';
+import { CharacterService } from './character.service';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,7 @@ import { CharacterGeneratorService } from './character-generator.service';
   providers: [
     QuizSubmissionService, 
     QuestionSubmissionService, 
-    CharacterGeneratorService,
+    CharacterService,
   ],
   bootstrap: [AppComponent]
 })

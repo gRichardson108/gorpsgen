@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CharacterGeneratorService } from '../character-generator.service';
+import { CharacterService } from '../character.service';
 import { ActivatedRoute } from '@angular/router';
 import { Character } from '../models/character';
 import { PrimaryStat } from '../models/primaryStat';
@@ -15,7 +15,7 @@ export class CharacterComponent implements OnInit {
   id: string;
   primaryStats: PrimaryStat[];
 
-  constructor(private api: CharacterGeneratorService,
+  constructor(private api: CharacterService,
     private route: ActivatedRoute) { }
 
   ngOnInit() {

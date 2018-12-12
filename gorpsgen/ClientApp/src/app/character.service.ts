@@ -6,7 +6,7 @@ import { of } from 'rxjs/observable/of';
 import { Character } from './models/character';
 
 @Injectable()
-export class CharacterGeneratorService {
+export class CharacterService {
 
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 

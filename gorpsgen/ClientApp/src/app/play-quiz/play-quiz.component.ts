@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { QuizSubmissionService } from '../quiz-submission.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionSubmissionService } from '../question-submission.service';
-import { CharacterGeneratorService } from '../character-generator.service';
+import { CharacterService } from '../character.service';
 
 @Component({
   selector: 'app-play-quiz',
@@ -20,7 +20,7 @@ export class PlayQuizComponent implements OnInit {
 
   constructor(private quizapi: QuizSubmissionService,
     private questionapi: QuestionSubmissionService, 
-    private chargenapi: CharacterGeneratorService,
+    private chargenapi: CharacterService,
     private route: ActivatedRoute,
     private router: Router) { }
 
